@@ -13,10 +13,10 @@ public class CarController : MonoBehaviour
 
     // Input declaration
     private PlayerControls controls;
-    public float throttleInput;
-    public float brakeInput;
-    public float clutchInput;
-    public float steeringInput;
+    [SerializeField] public float throttleInput;
+    [SerializeField] public float brakeInput;
+    [SerializeField] public float clutchInput;
+    [SerializeField] public float steeringInput;
 
     // declaring engine and steering var
     public float BHP;

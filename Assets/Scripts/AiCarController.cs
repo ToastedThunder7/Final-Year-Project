@@ -10,20 +10,16 @@ public class AiCarController : MonoBehaviour
 
     public WheelColliders colliders;
     public WheelMeshes wheelMeshes;
-
-    public NavMeshAgent agent;
-    public Transform finishLine; 
+    public Transform[] waypoints;
 
     private void Start()
     {
         rb = gameObject.GetComponent<Rigidbody>();
-        agent = gameObject.GetComponent<NavMeshAgent>();
     }
 
     private void Update()
     {
         UpdateWheelPos();
-        agent.destination = finishLine.position;
     }
 
     void UpdateWheelPos()

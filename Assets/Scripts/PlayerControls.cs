@@ -31,7 +31,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": ""Steering"",
                     ""type"": ""PassThrough"",
                     ""id"": ""0b03002d-f243-4b86-bb5b-0d122f1f2189"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -40,7 +40,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": ""Throttle"",
                     ""type"": ""PassThrough"",
                     ""id"": ""a084e810-47dd-43a6-b8e7-f21f53d785a2"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
