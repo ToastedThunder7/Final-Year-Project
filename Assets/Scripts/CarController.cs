@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -9,8 +10,9 @@ public class CarController : MonoBehaviour
     private Rigidbody rb;
     public WheelColliders colliders;
     public WheelMeshes wheelMeshes;
-    
+
     // Input declaration
+    private PlayerControls controls;
     public float throttleInput;
     public float brakeInput;
     public float clutchInput;
@@ -35,11 +37,27 @@ public class CarController : MonoBehaviour
     public float[] gearRatio;
     public float differentialRatio;
 
+    private void Awake()
+    {
+        controls = new PlayerControls();
+    }
+
+    private void OnEnable()
+    {
+        controls.Enable();
+    }
+
+    private void OnDisable()
+    {
+        controls.Disable();
+    }
 
     // Start is called before the first frame update
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody>();
+        controls.Car.ShiftUp.performed += _ => ShiftUp();
+        controls.Car.ShiftUp.performed += _ => ShiftDown();
     }
 
     // Update is called once per frame
@@ -48,19 +66,19 @@ public class CarController : MonoBehaviour
         // updates speed
         speed = rb.velocity.magnitude;
         CheckPlayerInputs();
-        ApplyEnginePower();
+        ApplyTorque();
         ApplySteering();
-        ApplyBrakePower();
+        ApplyBrakes();
         UpdateWheelPos();
     }
 
     // declares inputs and checks them
     void CheckPlayerInputs()
     {
-        throttleInput = Input.GetAxis("Vertical");
-        steeringInput = Input.GetAxis("Horizontal");
+        float throttleInput = controls.Car.Throttle.ReadValue<float>();
+        float steeringInput = controls.Car.Steering.ReadValue<float>();
 
-        if (Input.GetKey(KeyCode.LeftShift) == true)
+        if (controls.Car.Clutch.ReadValue<float>() == 1)
         {
             clutchInput = 0;
         }
@@ -82,7 +100,7 @@ public class CarController : MonoBehaviour
     }
 
 
-    void ApplyEnginePower()
+    void ApplyTorque()
     {
         //calculates torque from engine
         float currentTorque = 0;
@@ -110,7 +128,7 @@ public class CarController : MonoBehaviour
 
     }
 
-    void ApplyBrakePower()
+    void ApplyBrakes()
     {
         // applies brakes to wheels
         colliders.FRWheel.brakeTorque = brakeInput * brakePower;
@@ -126,6 +144,38 @@ public class CarController : MonoBehaviour
         //applies steering angle
         colliders.FRWheel.steerAngle = steeringAngle;
         colliders.FLWheel.steerAngle = steeringAngle;
+    }
+
+    private void ShiftUp()
+    {
+
+        if (clutchInput == 1)
+        {
+
+        }
+        else
+        {
+            if (currentGear < 5)
+            {
+                currentGear += 1;
+            }
+        }
+    }
+
+
+    private void ShiftDown()
+    {
+        if (clutchInput == 1)
+        {
+
+        }
+        else
+        {
+            if (currentGear > 0)
+            {
+                currentGear -= 1;
+            }
+        }
     }
 
     //Wheel positioning and rotation
